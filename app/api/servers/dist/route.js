@@ -36,41 +36,56 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.initialProfile = void 0;
-var nextjs_1 = require("@clerk/nextjs");
+exports.POST = void 0;
+var uuid_1 = require("uuid");
+var server_1 = require("next/server");
+var client_1 = require("@prisma/client");
+var current_profile_1 = require("@/lib/current-profile");
 var db_1 = require("@/lib/db");
-exports.initialProfile = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var user, profile, newProfile;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, nextjs_1.currentUser()];
-            case 1:
-                user = _a.sent();
-                if (!user) {
-                    nextjs_1.redirectToSignIn();
-                    return [2 /*return*/];
-                }
-                return [4 /*yield*/, db_1.db.profile.findUnique({
-                        where: {
-                            userID: user.id
-                        }
-                    })];
-            case 2:
-                profile = _a.sent();
-                if (profile) {
-                    return [2 /*return*/, profile];
-                }
-                return [4 /*yield*/, db_1.db.profile.create({
-                        data: {
-                            userID: user.id,
-                            name: user.firstName + " " + user.lastName,
-                            imageUrl: user.imageUrl,
-                            email: user.emailAddresses[0].emailAddress
-                        }
-                    })];
-            case 3:
-                newProfile = _a.sent();
-                return [2 /*return*/, newProfile];
-        }
+function POST(req) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _a, name, imageUrl, profile, server, error_1;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 4, , 5]);
+                    return [4 /*yield*/, req.json()];
+                case 1:
+                    _a = _b.sent(), name = _a.name, imageUrl = _a.imageUrl;
+                    return [4 /*yield*/, current_profile_1.currentProfile()];
+                case 2:
+                    profile = _b.sent();
+                    if (!profile) {
+                        return [2 /*return*/, new server_1.NextResponse("Unauthorized", { status: 401 })];
+                    }
+                    return [4 /*yield*/, db_1.db.server.create({
+                            data: {
+                                profileId: profile.id,
+                                name: name,
+                                imageUrl: imageUrl,
+                                inviteCode: uuid_1.v4(),
+                                channels: {
+                                    create: [
+                                        { name: "general", profileId: profile.id },
+                                    ]
+                                },
+                                members: {
+                                    create: [
+                                        { profileId: profile.id, role: client_1.MemberRole.ADMIN }
+                                    ]
+                                }
+                            }
+                        })];
+                case 3:
+                    server = _b.sent();
+                    return [2 /*return*/, server_1.NextResponse.json(server)];
+                case 4:
+                    error_1 = _b.sent();
+                    console.error("[SERVERS_POST]", error_1);
+                    return [2 /*return*/, new server_1.NextResponse("Internal Server Error", { status: 500 })];
+                case 5: return [2 /*return*/];
+            }
+        });
     });
-}); };
+}
+exports.POST = POST;

@@ -36,41 +36,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.initialProfile = void 0;
-var nextjs_1 = require("@clerk/nextjs");
-var db_1 = require("@/lib/db");
-exports.initialProfile = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var user, profile, newProfile;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, nextjs_1.currentUser()];
-            case 1:
-                user = _a.sent();
-                if (!user) {
-                    nextjs_1.redirectToSignIn();
-                    return [2 /*return*/];
-                }
-                return [4 /*yield*/, db_1.db.profile.findUnique({
-                        where: {
-                            userID: user.id
-                        }
-                    })];
-            case 2:
-                profile = _a.sent();
-                if (profile) {
-                    return [2 /*return*/, profile];
-                }
-                return [4 /*yield*/, db_1.db.profile.create({
-                        data: {
-                            userID: user.id,
-                            name: user.firstName + " " + user.lastName,
-                            imageUrl: user.imageUrl,
-                            email: user.emailAddresses[0].emailAddress
-                        }
-                    })];
-            case 3:
-                newProfile = _a.sent();
-                return [2 /*return*/, newProfile];
-        }
+var navigation_sidebar_1 = require("@/components/navigation/navigation-sidebar");
+var MainLayout = function (_a) {
+    var children = _a.children;
+    return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_b) {
+            return [2 /*return*/, (React.createElement("div", { className: "h-full" },
+                    React.createElement("div", { className: "hidden md:flex h-full w-[72px] z-30 flex-col fixed inset-y-0" },
+                        React.createElement(navigation_sidebar_1.NavigationSidebar, null)),
+                    React.createElement("main", { className: "md:pl-[72px] h-full" }, children)))];
+        });
     });
-}); };
+};
+exports["default"] = MainLayout;

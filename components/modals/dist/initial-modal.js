@@ -52,11 +52,14 @@ exports.InitialModal = void 0;
 var z = require("zod");
 var react_hook_form_1 = require("react-hook-form");
 var zod_1 = require("@hookform/resolvers/zod");
+var react_1 = require("react");
+var navigation_1 = require("next/navigation");
+var axios_1 = require("axios");
 var dialog_1 = require("@/components/ui/dialog");
 var form_1 = require("@/components/ui/form");
 var button_1 = require("@/components/ui/button");
 var input_1 = require("@/components/ui/input");
-var react_1 = require("react");
+var file_upload_1 = require("../file-upload");
 var formSchema = z.object({
     name: z.string().min(1, {
         message: "Server name is required"
@@ -67,6 +70,7 @@ var formSchema = z.object({
 });
 exports.InitialModal = function () {
     var _a = react_1.useState(false), isMounted = _a[0], setIsMounted = _a[1];
+    var router = navigation_1.useRouter();
     react_1.useEffect(function () {
         setIsMounted(true);
     }, []);
@@ -82,9 +86,24 @@ exports.InitialModal = function () {
     }
     var isLoading = form.formState.isSubmitting;
     var onSubmit = function (values) { return __awaiter(void 0, void 0, void 0, function () {
+        var error_1;
         return __generator(this, function (_a) {
-            console.log(values);
-            return [2 /*return*/];
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, axios_1["default"].post("/api/servers", values)];
+                case 1:
+                    _a.sent();
+                    form.reset();
+                    router.refresh();
+                    window.location.reload();
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_1 = _a.sent();
+                    console.log(error_1);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
         });
     }); };
     return (React.createElement(dialog_1.Dialog, { open: true },
@@ -95,7 +114,13 @@ exports.InitialModal = function () {
             React.createElement(form_1.Form, __assign({}, form),
                 React.createElement("form", { onSubmit: form.handleSubmit(onSubmit), className: "space-y-8" },
                     React.createElement("div", { className: "space-y-8 px-6" },
-                        React.createElement("div", { className: "flex items-center justify-center text-center" }, "TODO: Image Upload"),
+                        React.createElement("div", { className: "flex items-center justify-center text-center" },
+                            React.createElement(form_1.FormField, { control: form.control, name: "imageUrl", render: function (_a) {
+                                    var field = _a.field;
+                                    return (React.createElement(form_1.FormItem, null,
+                                        React.createElement(form_1.FormControl, null,
+                                            React.createElement(file_upload_1.FileUpload, { endpoint: "serverImage", value: field.value, onChange: field.onChange }))));
+                                } })),
                         React.createElement(form_1.FormField, { control: form.control, name: "name", render: function (_a) {
                                 var field = _a.field;
                                 return (React.createElement(form_1.FormItem, null,

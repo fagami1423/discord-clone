@@ -30,4 +30,5 @@ export const initialProfile = async () => {
 
         }
     }); 
+    return newProfile;
 }

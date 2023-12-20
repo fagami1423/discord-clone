@@ -36,41 +36,50 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.initialProfile = void 0;
-var nextjs_1 = require("@clerk/nextjs");
+exports.NavigationSidebar = void 0;
+var navigation_1 = require("next/navigation");
+var separator_1 = require("@/components/ui/separator");
+var scroll_area_1 = require("@/components/ui/scroll-area");
+var current_profile_1 = require("@/lib/current-profile");
 var db_1 = require("@/lib/db");
-exports.initialProfile = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var user, profile, newProfile;
+var navigation_action_1 = require("./navigation-action");
+var navigation_item_1 = require("./navigation-item");
+var mode_toggle_1 = require("@/components/mode-toggle");
+var nextjs_1 = require("@clerk/nextjs");
+exports.NavigationSidebar = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var profile, servers;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, nextjs_1.currentUser()];
-            case 1:
-                user = _a.sent();
-                if (!user) {
-                    nextjs_1.redirectToSignIn();
-                    return [2 /*return*/];
+            case 0:
+                profile = current_profile_1.currentProfile();
+                if (!profile) {
+                    return [2 /*return*/, navigation_1.redirect("/")];
                 }
-                return [4 /*yield*/, db_1.db.profile.findUnique({
+                return [4 /*yield*/, db_1.db.server.findMany({
                         where: {
-                            userID: user.id
+                            members: {
+                                some: {
+                                    profileId: profile.id
+                                }
+                            }
                         }
                     })];
-            case 2:
-                profile = _a.sent();
-                if (profile) {
-                    return [2 /*return*/, profile];
-                }
-                return [4 /*yield*/, db_1.db.profile.create({
-                        data: {
-                            userID: user.id,
-                            name: user.firstName + " " + user.lastName,
-                            imageUrl: user.imageUrl,
-                            email: user.emailAddresses[0].emailAddress
-                        }
-                    })];
-            case 3:
-                newProfile = _a.sent();
-                return [2 /*return*/, newProfile];
+            case 1:
+                servers = _a.sent();
+                return [2 /*return*/, (React.createElement("div", { className: "space-y-4 flex flex-col items-center h-full text-primary w-full dark:bg-[#1E1F22] py-3" },
+                        React.createElement(navigation_action_1.NavigationAction, null),
+                        React.createElement(separator_1.Separator, { className: "h-[2px] bg-zinc-300 dark:bg-zinc-700 rounded-md w-10 mx-auto" }),
+                        React.createElement(scroll_area_1.ScrollArea, { className: "flex-1 w-full" }, servers.map(function (server) {
+                            return React.createElement("div", { key: server.id },
+                                React.createElement(navigation_item_1.NavigationItem, { id: server.id, name: server.name, imageUrl: server.imageUrl }));
+                        })),
+                        React.createElement("div", { className: "pb-3 mt-auto flex items-center flex-col gap-y-4" },
+                            React.createElement(mode_toggle_1.ModeToggle, null),
+                            React.createElement(nextjs_1.UserButton, { afterSignOutUrl: "/", appearance: {
+                                    elements: {
+                                        avatarBox: "h-[48px] w-[48px]"
+                                    }
+                                } }))))];
         }
     });
 }); };
