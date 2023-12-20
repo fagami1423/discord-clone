@@ -4,6 +4,7 @@ exports.metadata = void 0;
 var google_1 = require("next/font/google");
 require("./globals.css");
 var nextjs_1 = require("@clerk/nextjs");
+var modal_provider_1 = require("@/components/providers/modal-provider");
 var theme_provider_1 = require("@/components/providers/theme-provider");
 var utils_1 = require("@/lib/utils");
 var font = google_1.Open_Sans({ subsets: ['latin'] });
@@ -16,6 +17,8 @@ function RootLayout(_a) {
     return (React.createElement(nextjs_1.ClerkProvider, null,
         React.createElement("html", { lang: "en" },
             React.createElement("body", { className: utils_1.cn(font.className, "bg-white dark:bg-[#313338]") },
-                React.createElement(theme_provider_1.ThemeProvider, { attribute: "class", defaultTheme: "dark", enableSystem: true, storageKey: "discord-theme" }, children)))));
+                React.createElement(theme_provider_1.ThemeProvider, { attribute: "class", defaultTheme: "dark", enableSystem: true, storageKey: "discord-theme" },
+                    React.createElement(modal_provider_1.ModalProvider, null),
+                    children)))));
 }
 exports["default"] = RootLayout;

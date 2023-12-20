@@ -66,11 +66,11 @@ exports.NavigationSidebar = function () { return __awaiter(void 0, void 0, void 
                     })];
             case 1:
                 servers = _a.sent();
-                return [2 /*return*/, (React.createElement("div", { className: "space-y-4 flex flex-col items-center h-full text-primary w-full dark:bg-[#1E1F22] py-3" },
+                return [2 /*return*/, (React.createElement("div", { className: "space-y-4 flex flex-col items-center h-full text-primary w-full dark:bg-[#1E1F22] 22] bg-[#E3E5E8] py-3" },
                         React.createElement(navigation_action_1.NavigationAction, null),
                         React.createElement(separator_1.Separator, { className: "h-[2px] bg-zinc-300 dark:bg-zinc-700 rounded-md w-10 mx-auto" }),
                         React.createElement(scroll_area_1.ScrollArea, { className: "flex-1 w-full" }, servers.map(function (server) {
-                            return React.createElement("div", { key: server.id },
+                            return React.createElement("div", { key: server.id, className: "mb-4" },
                                 React.createElement(navigation_item_1.NavigationItem, { id: server.id, name: server.name, imageUrl: server.imageUrl }));
                         })),
                         React.createElement("div", { className: "pb-3 mt-auto flex items-center flex-col gap-y-4" },

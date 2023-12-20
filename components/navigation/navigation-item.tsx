@@ -20,6 +20,13 @@ export const NavigationItem = ({
 
     const params = useParams();
     const router = useRouter();
+    const handleClick = () => {
+        // params?.serverId = id
+        router.push(`/servers/${id}`);
+    }
+
+    
+
     return(
         <ActionTooltip 
           side="right"
@@ -27,7 +34,7 @@ export const NavigationItem = ({
           label={name}
         >
             <button
-              onClick={()=>{}}
+              onClick={handleClick}
               className="group relative flex items-center"
             >
                 <div className={cn(
