@@ -5,8 +5,10 @@ exports.ServerHeader = void 0;
 var client_1 = require("@prisma/client");
 var lucide_react_1 = require("lucide-react");
 var dropdown_menu_1 = require("@/components/ui/dropdown-menu");
+var use_modal_store_1 = require("@/hooks/use-modal-store");
 exports.ServerHeader = function (_a) {
     var server = _a.server, role = _a.role;
+    var onOpen = use_modal_store_1.useModal().onOpen;
     var isAdmin = role === client_1.MemberRole.ADMIN;
     var isModerator = isAdmin || role === client_1.MemberRole.MODERATOR;
     return (React.createElement(dropdown_menu_1.DropdownMenu, null,
@@ -15,7 +17,7 @@ exports.ServerHeader = function (_a) {
                 server.name,
                 React.createElement(lucide_react_1.ChevronDown, { className: "h-5 w-5 ml-auto" }))),
         React.createElement(dropdown_menu_1.DropdownMenuContent, { className: "w-56 text-xs font-medium text-black\n              dark:text-neutral-400 space-y-[2px]" },
-            isModerator && (React.createElement(dropdown_menu_1.DropdownMenuItem, { className: "text-indigo-600 dark:text-indigo-400\n                      px-3 py-2 text-sm cursor-pointer" },
+            isModerator && (React.createElement(dropdown_menu_1.DropdownMenuItem, { onClick: function () { return onOpen("invite", { server: server }); }, className: "text-indigo-600 dark:text-indigo-400\n                      px-3 py-2 text-sm cursor-pointer" },
                 "Invite People",
                 React.createElement(lucide_react_1.UserPlus, { className: "h-4 w-4 ml-auto" }))),
             isAdmin && (React.createElement(dropdown_menu_1.DropdownMenuItem, { className: "px-3 py-2 text-sm cursor-pointer" },
