@@ -26,14 +26,14 @@ exports.ServerHeader = function (_a) {
             isAdmin && (React.createElement(dropdown_menu_1.DropdownMenuItem, { onClick: function () { return onOpen("members", { server: server }); }, className: "px-3 py-2 text-sm cursor-pointer" },
                 "Manage Members",
                 React.createElement(lucide_react_1.Users, { className: "h-4 w-4 ml-auto" }))),
-            isModerator && (React.createElement(dropdown_menu_1.DropdownMenuItem, { className: "px-3 py-2 text-sm cursor-pointer" },
+            isModerator && (React.createElement(dropdown_menu_1.DropdownMenuItem, { onClick: function () { return onOpen("createChannel"); }, className: "px-3 py-2 text-sm cursor-pointer" },
                 "Create Channel",
                 React.createElement(lucide_react_1.PlusCircle, { className: "h-4 w-4 ml-auto" }))),
             isModerator && (React.createElement(dropdown_menu_1.DropdownMenuSeparator, null)),
-            isAdmin && (React.createElement(dropdown_menu_1.DropdownMenuItem, { className: "text-rose-500 px-3 py-2 text-sm cursor-pointer" },
+            isAdmin && (React.createElement(dropdown_menu_1.DropdownMenuItem, { onClick: function () { return onOpen("deleteServer", { server: server }); }, className: "text-rose-500 px-3 py-2 text-sm cursor-pointer" },
                 "Delete Server",
                 React.createElement(lucide_react_1.Trash, { className: "h-4 w-4 ml-auto" }))),
-            !isAdmin && (React.createElement(dropdown_menu_1.DropdownMenuItem, { className: "text-rose-500 px-3 py-2 text-sm cursor-pointer" },
+            !isAdmin && (React.createElement(dropdown_menu_1.DropdownMenuItem, { onClick: function () { return onOpen("leaveServer", { server: server }); }, className: "text-rose-500 px-3 py-2 text-sm cursor-pointer" },
                 "Leave Server",
                 React.createElement(lucide_react_1.LogOut, { className: "h-4 w-4 ml-auto" }))))));
 };

@@ -50,8 +50,9 @@ exports.NavigationSidebar = function () { return __awaiter(void 0, void 0, void 
     var profile, servers;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0:
-                profile = current_profile_1.currentProfile();
+            case 0: return [4 /*yield*/, current_profile_1.currentProfile()];
+            case 1:
+                profile = _a.sent();
                 if (!profile) {
                     return [2 /*return*/, navigation_1.redirect("/")];
                 }
@@ -64,7 +65,7 @@ exports.NavigationSidebar = function () { return __awaiter(void 0, void 0, void 
                             }
                         }
                     })];
-            case 1:
+            case 2:
                 servers = _a.sent();
                 return [2 /*return*/, (React.createElement("div", { className: "space-y-4 flex flex-col items-center h-full text-primary w-full dark:bg-[#1E1F22] 22] bg-[#E3E5E8] py-3" },
                         React.createElement(navigation_action_1.NavigationAction, null),
