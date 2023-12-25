@@ -10,6 +10,8 @@ var invite_modal_1 = require("@/components/modals/invite-modal");
 var create_channel_modal_1 = require("@/components/modals/create-channel-modal");
 var leave_server_modal_1 = require("@/components/modals/leave-server-modal");
 var delete_server_modal_1 = require("@/components/modals/delete-server-modal");
+var delete_channel_modal_1 = require("@/components/modals/delete-channel-modal");
+var edit_channel_modal_1 = require("@/components/modals/edit-channel-modal");
 exports.ModalProvider = function () {
     var _a = react_1.useState(false), isMounted = _a[0], setIsMounted = _a[1];
     react_1.useEffect(function () {
@@ -25,5 +27,7 @@ exports.ModalProvider = function () {
         React.createElement(members_modal_1.MembersModal, null),
         React.createElement(create_channel_modal_1.CreateChannelModal, null),
         React.createElement(leave_server_modal_1.LeaveServerModal, null),
-        React.createElement(delete_server_modal_1.DeleteServerModal, null)));
+        React.createElement(delete_server_modal_1.DeleteServerModal, null),
+        React.createElement(delete_channel_modal_1.DeleteChannelModal, null),
+        React.createElement(edit_channel_modal_1.EditChannelModal, null)));
 };

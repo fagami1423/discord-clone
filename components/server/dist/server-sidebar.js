@@ -35,13 +35,31 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var _a, _b;
 exports.__esModule = true;
 exports.ServerSidebar = void 0;
 var client_1 = require("@prisma/client");
+var navigation_1 = require("next/navigation");
+var lucide_react_1 = require("lucide-react");
 var db_1 = require("@/lib/db");
 var current_profile_1 = require("@/lib/current-profile");
-var navigation_1 = require("next/navigation");
+var scroll_area_1 = require("@/components/ui/scroll-area");
+var separator_1 = require("@/components/ui/separator");
 var server_header_1 = require("./server-header");
+var server_section_1 = require("./server-section");
+var server_search_1 = require("./server-search");
+var server_channel_1 = require("./server-channel");
+var server_member_1 = require("./server-member");
+var iconMap = (_a = {},
+    _a[client_1.ChannelType.TEXT] = React.createElement(lucide_react_1.Hash, { className: "mr-2 h-4 w-4" }),
+    _a[client_1.ChannelType.AUDIO] = React.createElement(lucide_react_1.Mic, { className: "mr-2 h-4 w-4" }),
+    _a[client_1.ChannelType.VIDEO] = React.createElement(lucide_react_1.Video, { className: "mr-2 h-4 w-4" }),
+    _a);
+var roleIconMap = (_b = {},
+    _b[client_1.MemberRole.GUEST] = null,
+    _b[client_1.MemberRole.MODERATOR] = React.createElement(lucide_react_1.ShieldCheck, { className: "h-4 2-3 mr-2 text-indigo-500" }),
+    _b[client_1.MemberRole.ADMIN] = React.createElement(lucide_react_1.ShieldAlert, { className: "h-4 2-3 mr-2 text-rose-500" }),
+    _b);
 exports.ServerSidebar = function (_a) {
     var serverId = _a.serverId;
     return __awaiter(void 0, void 0, void 0, function () {
@@ -86,7 +104,60 @@ exports.ServerSidebar = function (_a) {
                     }
                     role = (_b = server.members.find(function (member) { return member.profileId === profile.id; })) === null || _b === void 0 ? void 0 : _b.role;
                     return [2 /*return*/, (React.createElement("div", { className: "flex flex-col h-full text-primary w-full dark:bg-[#2B2D31] bg-[#F2F3F5]" },
-                            React.createElement(server_header_1.ServerHeader, { server: server, role: role })))];
+                            React.createElement(server_header_1.ServerHeader, { server: server, role: role }),
+                            React.createElement(scroll_area_1.ScrollArea, { className: "flex-1 px-3" },
+                                React.createElement("div", { className: "mt-2" },
+                                    React.createElement(server_search_1.ServerSearch, { data: [
+                                            {
+                                                label: "Text Channels",
+                                                type: "channel",
+                                                data: textChannels === null || textChannels === void 0 ? void 0 : textChannels.map(function (channel) { return ({
+                                                    id: channel.id,
+                                                    name: channel.name,
+                                                    icon: iconMap[channel.type]
+                                                }); })
+                                            },
+                                            {
+                                                label: "Voice Channels",
+                                                type: "channel",
+                                                data: audioChannels === null || audioChannels === void 0 ? void 0 : audioChannels.map(function (channel) { return ({
+                                                    id: channel.id,
+                                                    name: channel.name,
+                                                    icon: iconMap[channel.type]
+                                                }); })
+                                            },
+                                            {
+                                                label: "Video Channels",
+                                                type: "channel",
+                                                data: videoChannels === null || videoChannels === void 0 ? void 0 : videoChannels.map(function (channel) { return ({
+                                                    id: channel.id,
+                                                    name: channel.name,
+                                                    icon: iconMap[channel.type]
+                                                }); })
+                                            },
+                                            {
+                                                label: "Members",
+                                                type: "member",
+                                                data: members === null || members === void 0 ? void 0 : members.map(function (member) { return ({
+                                                    id: member.id,
+                                                    name: member.profile.name,
+                                                    icon: roleIconMap[member.role]
+                                                }); })
+                                            },
+                                        ] })),
+                                React.createElement(separator_1.Separator, { className: "bg-zinc-200 dark:bg-zinc-700 rounded-md my-2" }),
+                                !!(textChannels === null || textChannels === void 0 ? void 0 : textChannels.length) && (React.createElement("div", { className: "mb-2" },
+                                    React.createElement(server_section_1.ServerSection, { sectionType: "channels", channelType: client_1.ChannelType.TEXT, role: role, label: "Text Channels" }),
+                                    React.createElement("div", { className: "space-y-[2px]" }, textChannels.map(function (channel) { return (React.createElement(server_channel_1.ServerChannel, { key: channel.id, channel: channel, role: role, server: server })); })))),
+                                !!(audioChannels === null || audioChannels === void 0 ? void 0 : audioChannels.length) && (React.createElement("div", { className: "mb-2" },
+                                    React.createElement(server_section_1.ServerSection, { sectionType: "channels", channelType: client_1.ChannelType.AUDIO, role: role, label: "Voice Channels" }),
+                                    React.createElement("div", { className: "space-y-[2px]" }, audioChannels.map(function (channel) { return (React.createElement(server_channel_1.ServerChannel, { key: channel.id, channel: channel, role: role, server: server })); })))),
+                                !!(videoChannels === null || videoChannels === void 0 ? void 0 : videoChannels.length) && (React.createElement("div", { className: "mb-2" },
+                                    React.createElement(server_section_1.ServerSection, { sectionType: "channels", channelType: client_1.ChannelType.VIDEO, role: role, label: "Video Channels" }),
+                                    React.createElement("div", { className: "space-y-[2px]" }, videoChannels.map(function (channel) { return (React.createElement(server_channel_1.ServerChannel, { key: channel.id, channel: channel, role: role, server: server })); })))),
+                                !!(members === null || members === void 0 ? void 0 : members.length) && (React.createElement("div", { className: "mb-2" },
+                                    React.createElement(server_section_1.ServerSection, { sectionType: "members", role: role, label: "Members", server: server }),
+                                    React.createElement("div", { className: "space-y-[2px]" }, members.map(function (member) { return (React.createElement(server_member_1.ServerMember, { key: member.id, member: member, server: server })); })))))))];
             }
         });
     });

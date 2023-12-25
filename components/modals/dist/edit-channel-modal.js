@@ -48,7 +48,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.CreateChannelModal = void 0;
+exports.EditChannelModal = void 0;
 var query_string_1 = require("query-string");
 var axios_1 = require("axios");
 var z = require("zod");
@@ -71,27 +71,24 @@ var formSchema = z.object({
     }),
     type: z.nativeEnum(client_1.ChannelType)
 });
-exports.CreateChannelModal = function () {
+exports.EditChannelModal = function () {
     var _a = use_modal_store_1.useModal(), isOpen = _a.isOpen, onClose = _a.onClose, type = _a.type, data = _a.data;
     var router = navigation_1.useRouter();
-    var params = navigation_1.useParams();
-    var isModalOpen = isOpen && type === "createChannel";
-    var channelType = data.channelType;
+    var isModalOpen = isOpen && type === "editChannel";
+    var channel = data.channel, server = data.server;
     var form = react_hook_form_1.useForm({
         resolver: zod_1.zodResolver(formSchema),
         defaultValues: {
             name: "",
-            type: channelType || client_1.ChannelType.TEXT
+            type: (channel === null || channel === void 0 ? void 0 : channel.type) || client_1.ChannelType.TEXT
         }
     });
     react_1.useEffect(function () {
-        if (channelType) {
-            form.setValue("type", channelType);
+        if (channel) {
+            form.setValue("name", channel.name);
+            form.setValue("type", channel.type);
         }
-        else {
-            form.setValue("type", client_1.ChannelType.TEXT);
-        }
-    }, [channelType, form]);
+    }, [form, channel]);
     var isLoading = form.formState.isSubmitting;
     var onSubmit = function (values) { return __awaiter(void 0, void 0, void 0, function () {
         var url, error_1;
@@ -100,12 +97,12 @@ exports.CreateChannelModal = function () {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     url = query_string_1["default"].stringifyUrl({
-                        url: "/api/channels",
+                        url: "/api/channels/" + (channel === null || channel === void 0 ? void 0 : channel.id),
                         query: {
-                            serverId: params === null || params === void 0 ? void 0 : params.serverId
+                            serverId: server === null || server === void 0 ? void 0 : server.id
                         }
                     });
-                    return [4 /*yield*/, axios_1["default"].post(url, values)];
+                    return [4 /*yield*/, axios_1["default"].patch(url, values)];
                 case 1:
                     _a.sent();
                     form.reset();
@@ -127,7 +124,7 @@ exports.CreateChannelModal = function () {
     return (React.createElement(dialog_1.Dialog, { open: isModalOpen, onOpenChange: handleClose },
         React.createElement(dialog_1.DialogContent, { className: "bg-white text-black p-0 overflow-hidden" },
             React.createElement(dialog_1.DialogHeader, { className: "pt-8 px-6" },
-                React.createElement(dialog_1.DialogTitle, { className: "text-2xl text-center font-bold" }, "Create Channel")),
+                React.createElement(dialog_1.DialogTitle, { className: "text-2xl text-center font-bold" }, "Edit Channel")),
             React.createElement(form_1.Form, __assign({}, form),
                 React.createElement("form", { onSubmit: form.handleSubmit(onSubmit), className: "space-y-8" },
                     React.createElement("div", { className: "space-y-8 px-6" },
@@ -151,5 +148,5 @@ exports.CreateChannelModal = function () {
                                     React.createElement(form_1.FormMessage, null)));
                             } })),
                     React.createElement(dialog_1.DialogFooter, { className: "bg-gray-100 px-6 py-4" },
-                        React.createElement(button_1.Button, { variant: "primary", disabled: isLoading }, "Create")))))));
+                        React.createElement(button_1.Button, { variant: "primary", disabled: isLoading }, "Save")))))));
 };

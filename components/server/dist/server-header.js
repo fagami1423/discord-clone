@@ -13,7 +13,7 @@ exports.ServerHeader = function (_a) {
     var isModerator = isAdmin || role === client_1.MemberRole.MODERATOR;
     return (React.createElement(dropdown_menu_1.DropdownMenu, null,
         React.createElement(dropdown_menu_1.DropdownMenuTrigger, { className: "focus:outline-none", asChild: true },
-            React.createElement("button", { className: "w-full text-md font-semibold flex\n                  items-center h-12 border-neutral-200 dark:border-neutral-800 border-b-2\n                  hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition" },
+            React.createElement("button", { className: "w-full text-md font-semibold px-3 flex\n                  items-center h-12 border-neutral-200 dark:border-neutral-800 border-b-2\n                  hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition" },
                 server.name,
                 React.createElement(lucide_react_1.ChevronDown, { className: "h-5 w-5 ml-auto" }))),
         React.createElement(dropdown_menu_1.DropdownMenuContent, { className: "w-56 text-xs font-medium text-black\n              dark:text-neutral-400 space-y-[2px]" },
