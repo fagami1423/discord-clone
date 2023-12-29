@@ -71,7 +71,6 @@ export const MessageFileModal = () => {
             console.log(error);
         }
     }
-    
 
     return (
         <Dialog open={isModalOpen} onOpenChange={handleClose}>
