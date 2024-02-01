@@ -1,6 +1,7 @@
 "use client";
 
 import * as z from "zod";
+import qs from "query-string";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -20,17 +21,15 @@ import {
     FormControl,
     FormField,
     FormItem,
-    FormLabel,
-    FormMessage,
+
 } from '@/components/ui/form';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { FileUpload } from "../file-upload";
 import { useModal } from "@/hooks/use-modal-store";
-
+import { on } from "events";
 const formSchema = z.object({
-    imageUrl: z.string().min(1,{
-        message: "Server image is required"
+    fileUrl: z.string().min(1,{
+        message: "Attachment is required"
     }),
 })
 
@@ -41,14 +40,13 @@ export const MessageFileModal = () => {
     const isModalOpen = isOpen && type ==="messageFile";
     
     const router = useRouter();  
+    const { apiUrl, query } = data; 
 
-   
 
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "",
-            imageUrl:"",
+            fileUrl:"",
         },
     })
     
@@ -62,10 +60,17 @@ export const MessageFileModal = () => {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-          await axios.post("/api/servers", values);
+          const url = qs.stringifyUrl({
+            url: apiUrl || "",
+            query,
+          })
+          await axios.post(url, {
+            ...values,
+            content: values.fileUrl,
+          });
           form.reset();
           router.refresh();
-          window.location.reload();
+          onClose();
 
         } catch (error) {
             console.log(error);
@@ -91,12 +96,12 @@ export const MessageFileModal = () => {
                         <div className="flex items-center justify-center text-center">
                             <FormField
                                 control={form.control}
-                                name="imageUrl"
+                                name="fileUrl"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormControl>
                                             <FileUpload
-                                              endpoint="serverImage"
+                                              endpoint="messageFile"
                                               value={field.value}
                                               onChange={field.onChange}
                                             />
@@ -106,32 +111,11 @@ export const MessageFileModal = () => {
                             
                             />
                         </div>
-                        <FormField
-                            control={form.control}   
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                                        Server name
-                                    </FormLabel>
-                                    <FormControl>
-                                        <Input 
-                                            disabled={isLoading}
-                                            className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                                            placeholder="Enter server name"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage>
-
-                                    </FormMessage>
-                                </FormItem>
-                            )}
-                        />
+                        
                     </div>
                     <DialogFooter className="bg-gray-100 px-6 py-4">
                         <Button variant="primary" disabled={isLoading}>    
-                                Create
+                                Send
                         </Button>
 
                     </DialogFooter>
